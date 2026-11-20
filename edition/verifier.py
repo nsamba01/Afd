@@ -28,3 +28,21 @@ flat=lambda t:''.join(c for c in unicodedata.normalize('NFKD',t.lower()) if c.is
 for level,title,n in d.get_toc():assert flat(title) in flat(d[n-1].get_text()),(title,n)
 assert sum(len(d[i].get_links()) for i in [3,4])==len(d.get_toc())
 print('Chaque entrée du sommaire correspond à un titre présent sur la page indiquée.')
+# Reconcile all contents entries with the printed source, including the targets.
+source_toc=[]
+for i in [3,4]:
+ body=s[i].get_text().split(f'\n{i+1} \n',1)[1].replace('Table des matières','')
+ for item in re.finditer(r'(.+?)\.{2,}\s*(\d+)\s*(?:\n|$)',body,re.S):source_toc.append((norm(item[1]),int(item[2])))
+assert [(norm(t),n) for _,t,n in d.get_toc()]==source_toc
+for i,group in zip([3,4],[source_toc[:28],source_toc[28:]]):
+ links=sorted(d[i].get_links(),key=lambda a:a['from'].y0);assert [a['page']+1 for a in links]==[n for _,n in group]
+ assert all(t in norm(content(d[i])) for t,_ in group)
+# Full extraction also covers the lists' embedded forms/ActualText.
+for i in [5,6,7]:assert norm(s[i].get_text())==norm(d[i].get_text())
+assert sorted(im['digest'] for im in s[0].get_image_info(hashes=True))==sorted(im['digest'] for im in d[0].get_image_info(hashes=True))
+import csv
+with open('edition/Controle_par_page.csv','w',encoding='utf-8-sig',newline='') as f:
+ out=csv.writer(f,delimiter=';');out.writerow(['Page source','Page épreuve','Comparaison','Rendu non blanc','Mots hors page','Figure vectorielle'])
+ for n in range(1,len(d)+1):
+  how='Sommaire : intitulés, destinations, liens' if n in [4,5] else 'Flux de texte normalisé, hors zone de figure' if n in fig else 'Texte et trois logos' if n==1 else 'Flux de texte normalisé'
+  out.writerow([n,n,how,'Oui',0,fig.index(n)+1 if n in fig else ''])

@@ -24,3 +24,9 @@ Aucun pourcentage n’a été obtenu en mesurant la longueur d’une barre sur l
 L’archive `Sources_editables.zip` contient une page SVG éditable par page du rapport (texte et tracés), ainsi que les scripts de production et de contrôle. Pour une retouche isolée, ouvrir le SVG concerné dans un éditeur vectoriel. L’apparence du texte dans un éditeur dépend des polices installées ; le PDF est la référence de rendu. Les textes positionnés ne constituent pas un document Word à pagination fluide.
 
 Pour régénérer le PDF dans le dépôt : depuis la racine, avec Python 3, PyMuPDF, fonttools et les polices DejaVu Sans installés, exécuter `python edition/produire.py`, puis `python edition/verifier.py`. Les deux PDF d’entrée doivent rester à la racine. Les données transcrites et les tracés des figures se trouvent dans `edition/figures.py`.
+
+## Révision des titres et de l’infographie
+
+La couverture reprend la taille de titre de Md_ref (50 pt, interligne 55 pt) et la ligne secondaire or de 40 pt. Le diagnostic ne comporte pas de sous-titre de couverture distinct : la ligne « Kinshasa, Octobre 2026 » tient cette place. Les ouvertures de chapitre utilisent le grand titre vert condensé ; les intertitres numérotés utilisent la variante grasse, avec adaptation pour les lignes longues ou serrées.
+
+Page 26, la phrase décrivant les 160 établissements a été composée sous forme de panneau et de trois barres d’effectifs (101, 22, 37). Page 27, un bandeau proportionnel relie les trois résultats déjà imprimés (68,4 %, 30,2 %, 1,4 %). Ces éléments n’ajoutent ni intitulé analytique ni résultat. Le contrôle `Controle_par_page.csv` détaille le périmètre du rapprochement pour chacune des 151 pages. Il s’agit d’un contrôle numérique, et non d’un bon à tirer papier ou d’une validation indépendante des données non publiées des figures.

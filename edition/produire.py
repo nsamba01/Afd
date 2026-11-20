@@ -57,13 +57,14 @@ def wrap(p,t,x,y,width,size,c,align='left',gap=1.14):
   else:rows[-1]=v
  for row in rows:text(p,x,y,row,size,c,align=align);y+=size*gap
  return y
+exec((OUT/'hierarchie.py').read_text())
 # Source pagination stays fixed. Replace the cover artwork, retaining all three authorised marks.
 p=D[0];orig=S[0]
 for x in p.get_contents():D.update_stream(x,b'')
 rect(p,p.rect,green);rect(p,(0,0,595.32,110),white)
 for i,im in enumerate(orig.get_image_info(xrefs=True)):
  box=[(442,27,555,83),(248,31,419,81),(42,27,225,83)][i];p.insert_image(box,xref=im['xref'])
-line(p,547,365,547,779,gold,1);lines=[z.strip() for z in orig.get_text().splitlines() if z.strip()];wrap(p,' '.join(lines[:-1]),521,403,445,33,white,'right');text(p,521,752,lines[-1],20,gold,align='right')
+cover_titles(p,[z.strip() for z in orig.get_text().splitlines() if z.strip()])
 # Recompose contents with the page-number column on the left, as in Md_ref.
 entries=[]
 for i in [3,4]:
@@ -76,7 +77,7 @@ for i,group in [(3,entries[:28]),(4,entries[28:])]:
  for link in p.get_links():p.delete_link(link)
  for x in p.get_contents():D.update_stream(x,b'')
  text(p,56,44,'ICHESS, LLC',12,green,True);text(p,539,44,'International Center for Health Systems Strengthening',9,ink,align='right');line(p,56,54,539,54,green)
- if i==3:text(p,56,105,'Table des matières',32,green)
+ if i==3:text(p,56,105,'Table des matières',40,green)
  y=142 if i==3 else 90;line(p,99,y-12,99,y+len(group)*19,(.84,.87,.84))
  for lvl,title,num in group:
   if lvl==1:line(p,111,y-13,539,y-13,(.89,.91,.88))
@@ -100,7 +101,12 @@ for i in range(1,len(D)):
  for x in p.get_contents():
   raw=D.xref_stream(x);raw=re.sub(rb'/Artifact\s*<<[^>]*?/Subtype/(?:Header|Footer)[^>]*?>>\s*BDC\b.*?\bEMC\b',b'',raw,flags=re.S);D.update_stream(x,re.sub(rb'\bBT\b.*?\bET\b',b'',raw,flags=re.S))
  line(p,56,45,p.rect.width-56,45,(.82,.85,.83),.4)
- for s in spans:
+ headings,skip=local_headings(spans,i+1)
+ for idx,s in enumerate(spans):
+  if idx in skip:continue
+  if idx in headings:
+   text(p,*headings[idx]);continue
+  if i==25 and 204<s['origin'][1]<375:continue
   val=s['text'].rstrip().replace('\uf0b7','•');
   if not val.strip():continue
   x,y=s['origin'];w=s['bbox'][2]-x;oldsize=s['size'];col=tuple(v/255 for v in m.sRGB_to_rgb(s['color']));
@@ -111,6 +117,9 @@ for i in range(1,len(D)):
   elif y>785 and val.strip()==str(i+1):oldsize=8;w=None;x=56;y=37;col=green
   elif s['text']!=val:w*=len(val)/len(s['text'])
   text(p,x,y,val,oldsize,col,'Bold' in s['font'],w)
+
+ if i==25:results_infographic(p,src)
+ if i==26:status_band(p,src)
 
 exec((OUT/'figures.py').read_text())
 D.subset_fonts();D.save(OUT/'Rapport_epreuve.pdf',garbage=4,deflate=True)
