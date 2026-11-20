@@ -86,6 +86,8 @@ for i,group in [(3,entries[:28]),(4,entries[28:])]:
   text(p,89,y,str(num),10,green,align='right');x=113 if lvl==1 else 127;f=fonts.get(choose(title,lvl==1),backup[lvl==1]);w=f.text_length(title,fontsize=10.3);text(p,x,y,title,10.3,green if lvl==1 else ink,lvl==1,width=min(w,537-x));p.insert_link(dict(kind=m.LINK_GOTO,**{"from":m.Rect(59,y-12,537,y+3)},page=num-1,to=m.Point(0,0)));y+=19
  text(p,537,813,str(i+1),10,green,align='right')
 D.set_toc(entries)
+exec((OUT/'composer_listes.py').read_text())
+composer_listes()
 # Source drawings and chart locations remain untouched except for explicitly redrawn figures.
 # Change the presentation colours, never the semantic red/yellow/green values.
 colors={b'0.0431 0.157 0.282':b'0.102 0.337 0.196',b'0.788 0.827 0.871':b'0.831 0.862 0.844',b'0.957 0.969 0.98':b'0.959 0.972 0.962',b'0.227 0.486 0.133':b'0.102 0.337 0.196',b'0.122 0.165 0.216':b'0.137 0.122 0.125'}

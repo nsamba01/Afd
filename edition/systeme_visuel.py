@@ -81,5 +81,6 @@ def finish_design():
         edge=0 if n%2==0 else w-6;rect(p,(edge,0,edge+6,h),paper);rect(p,(edge,52,edge+6,126 if n in openings else 82),ochre if n in openings else green)
         rect(p,(0,h-18,w,h),pine);rect(p,(0,h-18,42,h),green);rect(p,(42,h-18,45,h),ochre)
         title=section_name(n);text(p,57,h-6,title,8.5,white);text(p,w-57,h-6,str(n),9,white,True,align='right');records.append({'page':n,'type':'navigation','zone':[0,h-18,w,h],'titre':title})
+        if n in [23,55,64]:records.append(graphic_supplement(p,n))
         if n in profiles:provincial(p,S[idx],records)
     (OUT/'zones_design.json').write_text(json.dumps(records,ensure_ascii=False,indent=1)+'\n')
