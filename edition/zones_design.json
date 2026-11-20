@@ -1,0 +1,273 @@
+[
+ {
+  "page": 23,
+  "type": "lecture",
+  "zone": [
+   56,
+   563,
+   540,
+   802
+  ],
+  "libelles": [
+   "Rôle des douze dimensions dans les 71 spécifications",
+   "Bloquante",
+   "Restrictive",
+   "Contextuelle",
+   "0",
+   "35",
+   "71",
+   "0",
+   "35",
+   "71",
+   "Organisation du service",
+   "68 / 3 / 0",
+   "Capacité d'accueil",
+   "8 / 34 / 21",
+   "Ressources humaines",
+   "57 / 14 / 0",
+   "Intrants et produits",
+   "47 / 15 / 3",
+   "Équipements",
+   "56 / 15 / 0",
+   "Eau, hygiène et assainissement",
+   "0 / 54 / 9",
+   "Électricité",
+   "8 / 40 / 23",
+   "Communication",
+   "18 / 7 / 46",
+   "Référence",
+   "20 / 33 / 13",
+   "Données sanitaires",
+   "3 / 16 / 52",
+   "Surveillance épidémiologique",
+   "5 / 5 / 61",
+   "Intégration des services",
+   "5 / 18 / 46"
+  ]
+ },
+ {
+  "page": 55,
+  "type": "lecture",
+  "zone": [
+   56,
+   284,
+   540,
+   657
+  ],
+  "libelles": [
+   "indisponibilité le jour de la visite",
+   "0 %",
+   "25 %",
+   "50 %",
+   "75 %",
+   "100 %",
+   "ATPE",
+   "86,1 %",
+   "kit d’accouchement",
+   "78,1 %",
+   "kit anti-choc",
+   "78,1 %",
+   "Les ruptures prolongées",
+   "0 %",
+   "25 %",
+   "50 %",
+   "75 %",
+   "100 %",
+   "artésunate-amodiaquine",
+   "33,1 %",
+   "artésunate en suppositoire",
+   "14,9 %",
+   "tests rapides VIH",
+   "13,0 %",
+   "artéméther-luméfantrine",
+   "11,9 %"
+  ]
+ },
+ {
+  "page": 64,
+  "type": "lecture",
+  "zone": [
+   56,
+   603,
+   540,
+   802
+  ],
+  "libelles": [
+   "Événements récents déclarés",
+   "0 %",
+   "25 %",
+   "50 %",
+   "75 %",
+   "100 %",
+   "rupture de médicaments essentiels",
+   "54,4 %",
+   "ruptures d’approvisionnement en eau",
+   "31,4 %",
+   "pannes prolongées d’électricité",
+   "23,9 %",
+   "épidémies ou flambées de maladie",
+   "15,6 %",
+   "absence prolongée de personnel clé",
+   "12,7 %",
+   "incidents sécuritaires",
+   "12,5 %",
+   "tempêtes ou événements climatiques majeurs",
+   "1,9 %"
+  ]
+ },
+ {
+  "page": 83,
+  "type": "folio",
+  "zone": [
+   55,
+   28,
+   72,
+   43
+  ],
+  "titre": "83"
+ },
+ {
+  "page": 100,
+  "type": "profil",
+  "zone": [
+   56,
+   587.3900146484375,
+   540,
+   791.3900146484375
+  ],
+  "province": "Haut-Katanga",
+  "valeurs": [
+   "74,0",
+   "80,9"
+  ],
+  "evaluation": "1 217",
+  "etablissements": "52",
+  "zones": "13"
+ },
+ {
+  "page": 105,
+  "type": "profil",
+  "zone": [
+   56,
+   623.510009765625,
+   540,
+   803.9199829101562
+  ],
+  "province": "Haut-Lomami",
+  "valeurs": [
+   "79,2",
+   "87,2"
+  ],
+  "evaluation": "283",
+  "etablissements": "12",
+  "zones": "3"
+ },
+ {
+  "page": 110,
+  "type": "profil",
+  "zone": [
+   56,
+   260.3400115966797,
+   540,
+   464.3400115966797
+  ],
+  "province": "Kasaï-Central",
+  "valeurs": [
+   "62,8",
+   "73,6"
+  ],
+  "evaluation": "562",
+  "etablissements": "24",
+  "zones": "6"
+ },
+ {
+  "page": 115,
+  "type": "profil",
+  "zone": [
+   56,
+   260.3400115966797,
+   540,
+   464.3400115966797
+  ],
+  "province": "Kasaï-Oriental",
+  "valeurs": [
+   "43,2",
+   "52,1"
+  ],
+  "evaluation": "190",
+  "etablissements": "8",
+  "zones": "2"
+ },
+ {
+  "page": 119,
+  "type": "profil",
+  "zone": [
+   56,
+   744.97998046875,
+   540,
+   803.9199829101562
+  ],
+  "province": "Lomami",
+  "valeurs": [
+   "75,4",
+   "82,5"
+  ],
+  "evaluation": "378",
+  "etablissements": "16",
+  "zones": "4"
+ },
+ {
+  "page": 124,
+  "type": "profil",
+  "zone": [
+   56,
+   360.3299865722656,
+   540,
+   564.3299865722656
+  ],
+  "province": "Lualaba",
+  "valeurs": [
+   "55,9",
+   "60,9"
+  ],
+  "evaluation": "578",
+  "etablissements": "24",
+  "zones": "6"
+ },
+ {
+  "page": 129,
+  "type": "profil",
+  "zone": [
+   56,
+   360.3299865722656,
+   540,
+   564.3299865722656
+  ],
+  "province": "Sankuru",
+  "valeurs": [
+   "86,6",
+   "94,4"
+  ],
+  "evaluation": "372",
+  "etablissements": "16",
+  "zones": "4"
+ },
+ {
+  "page": 134,
+  "type": "profil",
+  "zone": [
+   56,
+   260.3400115966797,
+   540,
+   464.3400115966797
+  ],
+  "province": "Tanganyika",
+  "valeurs": [
+   "46,1",
+   "56,8"
+  ],
+  "evaluation": "193",
+  "etablissements": "8",
+  "zones": "2"
+ }
+]
