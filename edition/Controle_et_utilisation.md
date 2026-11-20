@@ -44,3 +44,11 @@ Les nouvelles zones de navigation et de données sont contrôlées séparément 
 Les pages 6 à 8 sont des index de texte vectoriel, non des reproductions de la liste Word. Le folio de destination est placé à gauche, puis viennent le numéro de figure ou de tableau et la légende. Le script rapproche les 21 figures, 37 tableaux et 64 tableaux annexes des légendes imprimées, puis crée un lien par entrée. Le renvoi non défini du tableau 29 est remplacé par sa destination vérifiée, page 70.
 
 Trois lectures graphiques non numérotées accompagnent des données déjà présentes : rôle des douze dimensions sur une échelle de 71 spécifications (p. 23) ; indisponibilité au jour de la visite et ruptures prolongées dans deux groupes distincts (p. 55) ; sept événements déclarés au cours des trois derniers mois, présentés séparément et non additionnés (p. 64). Les tableaux et paragraphes restent intégralement présents.
+
+## Révision du gabarit : navigation uniquement en haut
+
+Cette révision remplace le bandeau de pied et les repères de tranche décrits dans les révisions précédentes. Le folio et le titre courant sont désormais en haut des pages intérieures, y compris sur les matrices en paysage. Les vingt derniers points de chaque page intérieure sont contrôlés après rendu : aucune encre de pied de page. La couverture reste sans folio.
+
+Les ouvertures de Préface, Remerciements, Abréviations et acronymes, Résumé exécutif, Introduction, Approche méthodologique, Résultats, Discussion, Conclusion et recommandations, Bibliographie et Annexes reprennent le titre vert de 36 pt des listes, sa marge gauche, sa ligne de base et son filet à amorce or. La zone de composition sous le titre est adaptée sans modifier la pagination ni les destinations des liens.
+
+Les tableaux des pages 9–10, 17, 22, 71–73, 75 et 84 sont rhabillés sur la base du tableau de la page 49 de Md_ref : fond vert institutionnel pour les titres de colonnes, deux trames vert-gris alternées et séparateurs blancs. Le texte et les dimensions des colonnes sont ceux du diagnostic. L’en-tête est répété sur les deux pages du glossaire et les trois pages de la matrice. Les scripts et les SVG de l’archive correspondent à cette version.

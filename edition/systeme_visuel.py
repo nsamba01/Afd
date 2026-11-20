@@ -76,11 +76,10 @@ def finish_design():
     for idx,p in enumerate(D):
         n=idx+1;w,h=p.rect.width,p.rect.height
         if n==1:continue
-        # Distinct recto/verso edge markers and a continuous navigation band. Never
-        # paint in the body area, including the three landscape matrix pages.
-        edge=0 if n%2==0 else w-6;rect(p,(edge,0,edge+6,h),paper);rect(p,(edge,52,edge+6,126 if n in openings else 82),ochre if n in openings else green)
-        rect(p,(0,h-18,w,h),pine);rect(p,(0,h-18,42,h),green);rect(p,(42,h-18,45,h),ochre)
-        title=section_name(n);text(p,57,h-6,title,8.5,white);text(p,w-57,h-6,str(n),9,white,True,align='right');records.append({'page':n,'type':'navigation','zone':[0,h-18,w,h],'titre':title})
+        # No running footer or side rail: all navigation is in the masthead.
+        title=section_name(n);text(p,w-57,23,title,8.5,green,align='right');records.append({'page':n,'type':'navigation','zone':[330,9,w-48,28],'titre':title})
+        if n==83:
+            text(p,56,37,str(n),8,green);records.append({'page':n,'type':'folio','zone':[55,28,72,43],'titre':str(n)})
         if n in [23,55,64]:records.append(graphic_supplement(p,n))
         if n in profiles:provincial(p,S[idx],records)
     (OUT/'zones_design.json').write_text(json.dumps(records,ensure_ascii=False,indent=1)+'\n')
