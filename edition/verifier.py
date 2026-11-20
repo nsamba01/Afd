@@ -1,13 +1,17 @@
 """Contrôles de l'épreuve, à lancer depuis la racine."""
-import glob,collections,re,unicodedata
+import glob,collections,re,unicodedata,json
+from pathlib import Path
 import pymupdf as m
 s=m.open(glob.glob('Rapport_Diagnostic*.pdf')[0]);d=m.open('edition/Rapport_epreuve.pdf');assert len(s)==len(d)==151
 fig=[27,29,34,35,36,37,38,43,44,48,49,51,52,53,54,58,61,63,68,77,81]
+records=json.loads(Path("edition/zones_design.json").read_text())
 def content(page,exclude=None):
+ extra=[m.Rect(r["zone"]) for r in records if page.parent is d and r["page"]==page.number+1]
  groups=[]
  for b in page.get_text('dict',flags=0)['blocks']:
   for l in b['lines']:
    for z in l['spans']:
+    if any(area.contains(m.Point(z["origin"])) for area in extra):continue
     if exclude and exclude.intersects(m.Rect(z['bbox'])):continue
     groups.append(z['text'])
  return ''.join(groups)
@@ -38,7 +42,7 @@ for i,group in zip([3,4],[source_toc[:28],source_toc[28:]]):
  links=sorted(d[i].get_links(),key=lambda a:a['from'].y0);assert [a['page']+1 for a in links]==[n for _,n in group]
  assert all(t in norm(content(d[i])) for t,_ in group)
 # Full extraction also covers the lists' embedded forms/ActualText.
-for i in [5,6,7]:assert norm(s[i].get_text())==norm(d[i].get_text())
+for i in [5,6,7]:assert norm(s[i].get_text())==norm(d[i].get_text(clip=m.Rect(0,0,d[i].rect.width,d[i].rect.height-18)))
 assert sorted(im['digest'] for im in s[0].get_image_info(hashes=True))==sorted(im['digest'] for im in d[0].get_image_info(hashes=True))
 import csv
 with open('edition/Controle_par_page.csv','w',encoding='utf-8-sig',newline='') as f:
@@ -46,3 +50,17 @@ with open('edition/Controle_par_page.csv','w',encoding='utf-8-sig',newline='') a
  for n in range(1,len(d)+1):
   how='Sommaire : intitulés, destinations, liens' if n in [4,5] else 'Flux de texte normalisé, hors zone de figure' if n in fig else 'Texte et trois logos' if n==1 else 'Flux de texte normalisé'
   out.writerow([n,n,how,'Oui',0,fig.index(n)+1 if n in fig else ''])
+
+# Control the actual text of every new editorial layer independently, not just the source flow.
+for r in records:
+ n=r['page'];q=d[n-1];area=m.Rect(r['zone']);words=norm(q.get_text(clip=area));src=norm(s[n-1].get_text())
+ if r['type']=='navigation':
+  assert norm(r['titre'])+str(n)==words,(n,words)
+ else:
+  assert norm(r['province']) in words and norm(r['province']) in src
+  for value in r['valeurs']:assert norm(value+' %') in words and norm(value+' %') in src,(n,value)
+  if area.height>=134:
+   for v in [r['evaluation']+' évaluations calculables',r['etablissements']+' établissements',r['zones']+' zones']:assert norm(v) in src and norm(v) in words,(n,v)
+assert len([r for r in records if r['type']=='navigation'])==150
+assert len([r for r in records if r['type']=='profil'])==8
+print('Navigation contrôlée sur 150 pages intérieures ; huit comparaisons provinciales rapprochées de leur texte source.')
