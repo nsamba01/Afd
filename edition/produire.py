@@ -58,6 +58,7 @@ def wrap(p,t,x,y,width,size,c,align='left',gap=1.14):
  for row in rows:text(p,x,y,row,size,c,align=align);y+=size*gap
  return y
 exec((OUT/'tableaux_modele.py').read_text())
+exec((OUT/'rythme.py').read_text())
 exec((OUT/'hierarchie.py').read_text())
 exec((OUT/'systeme_visuel.py').read_text())
 # Source pagination stays fixed. Replace the cover artwork, retaining all three authorised marks.
@@ -102,7 +103,8 @@ for i in range(1,len(D)):
  # Typeset body pages in the model's typefaces; retain the precision of dense matrices
  # and lists with embedded glyph-images in their native positioned text.
 
- spans=[s for block in src.get_text('dict',flags=0)['blocks'] for ln in block['lines'] for s in ln['spans']];
+ blocks=src.get_text('dict',flags=0)['blocks'];prose_plan,prose_skip=plan_prose(src,blocks)
+ spans=[s for block in blocks for ln in block['lines'] for s in ln['spans']];
  for x in p.get_contents():
   raw=D.xref_stream(x);raw=re.sub(rb'/Artifact\s*<<[^>]*?/Subtype/(?:Header|Footer)[^>]*?>>\s*BDC\b.*?\bEMC\b',b'',raw,flags=re.S);D.update_stream(x,re.sub(rb'\bBT\b.*?\bET\b',b'',raw,flags=re.S))
  line(p,56,45,p.rect.width-56,45,(.82,.85,.83),.4)
@@ -110,7 +112,8 @@ for i in range(1,len(D)):
  headings,skip=local_headings(spans,i+1)
  for idx,s in enumerate(spans):
   if i==12 and 60<s['origin'][1]<780:continue
-  if idx in skip:continue
+  if idx in skip or idx in prose_skip:continue
+  if idx in prose_plan:poser_prose(p,prose_plan[idx]);continue
   if idx in headings:
    if i+1 in [2,3,11,14,17,26,83,89,96,100] and headings[idx][3]>=30:
     # Do not transform the page or any existing paragraph to make room for a heading.

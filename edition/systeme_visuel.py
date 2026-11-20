@@ -56,12 +56,14 @@ def provincial(p,src,record):
     # The compact layout uses the SAME two indicators when the page also has tables.
     large=h>=132;X=57;W=482;rect(p,(X,y,X+W,y+h),paper);rect(p,(X,y,X+4,y+h),green)
     text(p,69,y+(20 if large else 14),province,15 if large else 11,green,True)
+    # A common origin and ticks make both percentages directly comparable. Keep
+    # the complete measure names: the second is a subset, not a stacked share.
+    xx=213;w=290;levels=[y+53,y+92] if large else [y+25,y+40];ax=levels[-1]+(19 if large else 7)
+    for tick in [0,25,50,75,100]:
+        tx=xx+w*tick/100;line(p,tx,levels[0]-9,tx,ax,(.81,.86,.81),.55);text(p,tx,ax+(10 if large else 6),str(tick)+' %',8 if large else 6.5,green,align='center')
     for j,(label,v) in enumerate([('fonctions rouges',pct),('Fonctions vitales rouges',vpct)]):
-        x=69+j*236;w=211;vnum=float(v.replace(',','.'));yy=y+(53 if large else 29);text(p,x,yy,label,11 if large else 8,ink)
-        if large:
-            text(p,x,yy+45,v+' %',38,brick);bar=yy+60
-        else:text(p,x+w,yy,v+' %',12,brick,True,align='right');bar=yy+7
-        rect(p,(x,bar,x+w,bar+5),(.84,.88,.84));rect(p,(x,bar,x+w*vnum/100,bar+5),brick)
+        Y=levels[j];hh=12 if large else 5;tx=xx+w*float(v.replace(',','.'))/100
+        text(p,69,Y,label,12 if large else 9,ink);rect(p,(xx,Y-hh,tx,Y),brick if j==0 else (.48,.14,.17));text(p,tx+4,Y,v+' %',10 if large else 8,ink,True)
     if large:
         Y=y+h-27;line(p,69,Y-11,526,Y-11,mint);text(p,69,Y+5,evals+' évaluations calculables',11,green);text(p,299,Y+5,fac+' établissements, '+zones+' zones',11,green)
     record.append({'page':src.number+1,'type':'profil','zone':[X-1,y-1,X+W+1,y+h+1],'province':province,'valeurs':[pct,vpct],'evaluation':evals,'etablissements':fac,'zones':zones})

@@ -30,6 +30,7 @@ def local_headings(spans,n):
         runs.sort(key=lambda it:it[1]['origin'][0]);s=runs[0][1];t=' '.join(z['text'].strip() for _,z in runs);x=s['origin'][0]
         major=(n in [2,3,9,11,14,17,26,83,89,96,100] and 60<y<95 and s['size']>=17)
         sub=(re.match(r'^\d+\.\d+(?:\.|\s)',t) and 'Bold' in s['font'] and x<90 and s['size']>=11)
+        if n in [11,12] and not major and 60<y<780 and x<70 and all('Bold' in z['font'] for _,z in runs):sub=True
         if not major and not sub:continue
         size=40 if major else (18 if s['size']>=12.5 else 14)
         # Multiline subsections must not grow into their continuation or preceding line.
@@ -38,6 +39,8 @@ def local_headings(spans,n):
         x=56.7 if major else x
         w=min(539-x,sum(extent(c,size,not major) for c in t))
         if major and n==83:size=34;w=min(539-x,sum(extent(c,size) for c in t))
+        # Give visible breathing room below a subtitle while keeping clear of the preceding line.
+        if not major and (y-above)>size+5:y-=2.5
         replacements[runs[0][0]]=(x,y,t,size,green,not major,w);skip.update(i for i,_ in runs[1:])
     return replacements,skip
 

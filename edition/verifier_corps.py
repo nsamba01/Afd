@@ -1,10 +1,10 @@
-"""Comparer le corps à l’épreuve 1ebaa3b, sans exclure le texte des tableaux."""
+"""Contrôle historique de la révision 405348f, avant la recomposition demandée de la prose."""
 from collections import Counter
 import re, sys, subprocess
 import pymupdf as m
 from pathlib import Path
 baseline=m.open(sys.argv[1]) if len(sys.argv)>1 else m.open(stream=subprocess.check_output(['git','show','1ebaa3b:edition/Rapport_epreuve.pdf']),filetype='pdf')
-final=m.open(Path(__file__).with_name('Rapport_epreuve.pdf'));assert len(final)==len(baseline)
+final=m.open(stream=subprocess.check_output(['git','show','405348f:edition/Rapport_epreuve.pdf']),filetype='pdf');assert len(final)==len(baseline)
 def glyphes(p):
  n=p.number+1;res=Counter()
  for run in p.get_texttrace():

@@ -41,6 +41,9 @@ def graphic_supplement(p,n):
         matrix=[('Organisation du service',68,3,0),("Capacité d'accueil",8,34,21),('Ressources humaines',57,14,0),('Intrants et produits',47,15,3),('Équipements',56,15,0),('Eau, hygiène et assainissement',0,54,9),('Électricité',8,40,23),('Communication',18,7,46),('Référence',20,33,13),('Données sanitaires',3,16,52),('Surveillance épidémiologique',5,5,61),('Intégration des services',5,18,46)]
         for j,(lbl,c) in enumerate(zip(['Bloquante','Restrictive','Contextuelle'],[red,gold,blue])):
             x=70+j*149;rect(p,(x,598,x+10,605),c);add(x+15,605,lbl,9)
+        for k in [0,1]:
+            for tick in [0,35,71]:
+                xx=70+k*231+130*tick/71;line(p,xx,616,xx,784,mint,.5);add(xx,796,str(tick),7,green,align='center')
         for j,(label,*vals) in enumerate(matrix):
             x=70+j//6*231;Y=628+(j%6)*29;add(x,Y,label,9.3);xx=x
             for v,c in zip(vals,[red,gold,blue]):
@@ -51,11 +54,15 @@ def graphic_supplement(p,n):
         groups=[('indisponibilité le jour de la visite',[('ATPE','86,1'),('kit d’accouchement','78,1'),('kit anti-choc','78,1')]),('Les ruptures prolongées',[('artésunate-amodiaquine','33,1'),('artésunate en suppositoire','14,9'),('tests rapides VIH','13,0'),('artéméther-luméfantrine','11,9')])]
         for j,(title,items) in enumerate(groups):
             Y=316+j*171;add(72,Y,title,17,green,True)
+            for tick in [0,25,50,75,100]:
+                tx=251+212*tick/100;line(p,tx,Y+20,tx,Y+34+(len(items)-1)*29,mint,.6);add(tx,Y+47+(len(items)-1)*29,str(tick)+' %',8,green,align='center')
             for k,(label,v) in enumerate(items):
                 yy=Y+32+k*29;add(73,yy,label,11);xx=251;w=212;rect(p,(xx,yy-7,xx+w,yy),mint);rect(p,(xx,yy-7,xx+w*float(v.replace(',','.'))/100,yy),red if j==0 else blue);add(520,yy,v+' %',12,green,True,align='right')
     elif n==64:
         y=604;rect(p,(57,y,539,801),paper);rect(p,(57,y,61,801),green);add(72,627,'Événements récents déclarés',17,green,True)
         items=[('rupture de médicaments essentiels','54,4'),('ruptures d’approvisionnement en eau','31,4'),('pannes prolongées d’électricité','23,9'),('épidémies ou flambées de maladie','15,6'),('absence prolongée de personnel clé','12,7'),('incidents sécuritaires','12,5'),('tempêtes ou événements climatiques majeurs','1,9')]
+        for tick in [0,25,50,75,100]:
+            tx=287+174*tick/100;line(p,tx,637,tx,785,mint,.6);add(tx,797,str(tick)+' %',8,green,align='center')
         for j,(label,v) in enumerate(items):
             Y=651+j*22;add(72,Y,label,10);xx=287;w=174;rect(p,(xx,Y-7,xx+w,Y),mint);rect(p,(xx,Y-7,xx+w*float(v.replace(',','.'))/100,Y),blue);add(521,Y,v+' %',11,green,True,align='right')
     return {'page':n,'type':'lecture','zone':[56,y-1,540,802 if n!=55 else 657],'libelles':rows}

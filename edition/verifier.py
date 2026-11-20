@@ -68,10 +68,11 @@ for r in records:
  elif r['type']=='lecture':
   assert words==norm(''.join(r['libelles'])),(n,words)
   if n==23:
-   for j in range(4,len(r['libelles']),2):
+   for j in range(10,len(r['libelles']),2):
     label,nums=r['libelles'][j:j+2];assert norm(label) in src and norm(nums.replace('/','')) in src,(n,label,nums)
   else:
    for label in r['libelles']:
+    if label in ['0 %','25 %','50 %','75 %','100 %']:continue
     assert norm(label).casefold() in src.casefold(),(n,label)
  else:
   assert norm(r['province']) in words and norm(r['province']) in src
