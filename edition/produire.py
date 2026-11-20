@@ -59,6 +59,7 @@ def wrap(p,t,x,y,width,size,c,align='left',gap=1.14):
  return y
 exec((OUT/'tableaux_modele.py').read_text())
 exec((OUT/'rythme.py').read_text())
+exec((OUT/'espacement.py').read_text())
 exec((OUT/'hierarchie.py').read_text())
 exec((OUT/'systeme_visuel.py').read_text())
 # Source pagination stays fixed. Replace the cover artwork, retaining all three authorised marks.
@@ -81,8 +82,8 @@ for i,group in [(3,entries[:28]),(4,entries[28:])]:
  for link in p.get_links():p.delete_link(link)
  for x in p.get_contents():D.update_stream(x,b'')
  text(p,56,44,'ICHESS, LLC',12,green,True);text(p,539,44,'International Center for Health Systems Strengthening',9,ink,align='right');line(p,56,54,539,54,green)
- if i==3:titre_liste(p,'Table des matières',93,108)
- y=142 if i==3 else 90;line(p,99,y-12,99,y+len(group)*19,(.84,.87,.84))
+ if i==3:titre_liste(p,'Table des matières',54+ESPACE+28.8,54+ESPACE+36+ESPACE)
+ y=(54+ESPACE+36+ESPACE+ESPACE+12) if i==3 else 90;line(p,99,y-12,99,y+len(group)*19,(.84,.87,.84))
  for lvl,title,num in group:
   if lvl==1:line(p,111,y-13,539,y-13,(.89,.91,.88))
   text(p,89,y,str(num),10,green,align='right');x=113 if lvl==1 else 127;f=fonts.get(choose(title,lvl==1),backup[lvl==1]);w=f.text_length(title,fontsize=10.3);text(p,x,y,title,10.3,green if lvl==1 else ink,lvl==1,width=min(w,537-x));p.insert_link(dict(kind=m.LINK_GOTO,**{"from":m.Rect(59,y-12,537,y+3)},page=num-1,to=m.Point(0,0)));y+=19
@@ -110,16 +111,18 @@ for i in range(1,len(D)):
  line(p,56,45,p.rect.width-56,45,(.82,.85,.83),.4)
  if i+1 in TABLEAUX:fond_tableau(p,i+1)
  headings,skip=local_headings(spans,i+1)
+ dy,positions=regler_espaces(src,blocks,spans,headings,skip,prose_plan,prose_skip)
  for idx,s in enumerate(spans):
   if i==12 and 60<s['origin'][1]<780:continue
   if idx in skip or idx in prose_skip:continue
-  if idx in prose_plan:poser_prose(p,prose_plan[idx]);continue
+  if idx in prose_plan:poser_prose(p,prose_plan[idx],positions.get(idx));continue
   if idx in headings:
    if i+1 in [2,3,11,14,17,26,83,89,96,100] and headings[idx][3]>=30:
     # Do not transform the page or any existing paragraph to make room for a heading.
-    spacious=i+1 in [2,3];base=93 if spacious else 76;rule=108 if spacious else 85.5
+    base=45+ESPACE+28.8;rule=45+ESPACE+36+ESPACE
     rect(p,(54,50,542,rule+1.2),white);titre_liste(p,headings[idx][2],base,rule)
-   else:text(p,*headings[idx])
+   else:
+    hx,hy,*args=headings[idx];text(p,hx,hy+dy.get(idx,0),*args)
    continue
   if i==25 and 204<s['origin'][1]<375:continue
   val=s['text'].rstrip().replace('\uf0b7','•');
@@ -134,7 +137,7 @@ for i in range(1,len(D)):
   if i+1 in TABLEAUX:
    xs,ys=TABLEAUX[i+1]
    if xs[0]-1<=x<xs[-1] and ys[0]<y<=ys[1]:col=white
-  text(p,x,y,val,oldsize,col,'Bold' in s['font'],w)
+  text(p,x,y+dy.get(idx,0),val,oldsize,col,'Bold' in s['font'],w)
 
  if i==12:recommendations(p,src)
  if i==25:results_infographic(p,src)
@@ -143,3 +146,5 @@ for i in range(1,len(D)):
 exec((OUT/'figures.py').read_text())
 finish_design()
 D.subset_fonts();D.save(OUT/'Rapport_epreuve.pdf',garbage=4,deflate=True)
+
+print("Blocs de lecture positionnés :",dict(mesures_espaces))

@@ -9,9 +9,9 @@ def composer_listes():
         for ref in p.get_contents():D.update_stream(ref,b'')
         text(p,57,37,str(n),9,green,True);text(p,79,37,'ICHESS, LLC',9,green,True);text(p,142,37,'International Center for Health Systems Strengthening',8,ink);line(p,57,46,539,46,(.84,.88,.84))
         title={6:'Liste des figures et tableaux',7:'Liste des tableaux',8:'Tableaux des annexes'}[n]
-        text(p,56,93,title,36,green);line(p,57,108,539,108,(.86,.88,.84));line(p,57,108,102,108,ochre,2)
+        rule=46+ESPACE+36+ESPACE;titre_liste(p,title,46+ESPACE+28.8,rule)
         # Reference contents convention: folio at left, aligned entry with a fine vertical rule.
-        start=120;end=802;split=[];section=None
+        start=rule+ESPACE;end=802;split=[];section=None
         for _,kind,num,label,dest in rows:
             name='Liste des figures' if kind=='Figure' else 'Tableaux des annexes' if num.startswith('A') else 'Liste des tableaux'
             header=name if name!=section and name!=title else None;section=name

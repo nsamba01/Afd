@@ -63,9 +63,10 @@ def plan_prose(page,blocks):
                 ids=[idx for j in js for idx in indices[j]];schedule[ids[0]]=fit;ignore.update(ids[1:])
     return schedule,ignore
 
-def poser_prose(p,item):
+def poser_prose(p,item,positions=None):
     X,W,Y,size,lead,gap,paragraphs=item;writer=m.TextWriter(p.rect)
-    for rows in paragraphs:
+    for i,rows in enumerate(paragraphs):
+        if positions:Y=positions[i]
         for j,row in enumerate(rows):
             space=avance(' ')*size
             if j+1<len(rows) and len(row)>1:space=(W-size*sum(avance(word) for word in row))/(len(row)-1)
