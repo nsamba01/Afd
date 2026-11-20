@@ -19,12 +19,9 @@ def fond_tableau(p,n):
         if j:line(p,xs[0],top,xs[-1],top,white,.7)
     for x in xs[1:-1]:line(p,x,ys[0],x,ys[-1],white,.7)
 
-def chapitre_affine(p,exempts):
-    # Free 30 pt below the model's title without clipping or moving any section
-    # to a different page. Keep the masthead and 36 pt title at their native size.
-    from itertools import groupby
-    h=p.rect.height
-    for move,group in groupby(p.get_contents(),key=lambda ref:ref not in exempts):
-        ids=list(group)
-        if move:
-            a,b=ids[0],ids[-1];D.update_stream(a,('q 1 0 0 .96 0 %.5f cm\n'%(.04*h-33.1)).encode()+D.xref_stream(a));D.update_stream(b,D.xref_stream(b)+b'\nQ\n')
+
+def titre_liste(p,t,baseline,rule):
+    # Same face, size, margin and two-part rule as the title on page six.
+    width=sum(extent(c,36) for c in t)
+    text(p,56,baseline,t,36,green,width=483 if width>483 else None)
+    line(p,57,rule,539,rule,(.86,.88,.84));line(p,57,rule,102,rule,ochre,2)

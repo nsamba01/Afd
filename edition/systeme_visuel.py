@@ -76,8 +76,7 @@ def finish_design():
     for idx,p in enumerate(D):
         n=idx+1;w,h=p.rect.width,p.rect.height
         if n==1:continue
-        # No running footer or side rail: all navigation is in the masthead.
-        title=section_name(n);text(p,w-57,23,title,8.5,green,align='right');records.append({'page':n,'type':'navigation','zone':[330,9,w-48,28],'titre':title})
+        # Keep the existing upper masthead; do not duplicate it at the foot.
         if n==83:
             text(p,56,37,str(n),8,green);records.append({'page':n,'type':'folio','zone':[55,28,72,43],'titre':str(n)})
         if n in [23,55,64]:records.append(graphic_supplement(p,n))

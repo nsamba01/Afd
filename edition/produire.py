@@ -79,13 +79,13 @@ for i,group in [(3,entries[:28]),(4,entries[28:])]:
  p=D[i];
  for link in p.get_links():p.delete_link(link)
  for x in p.get_contents():D.update_stream(x,b'')
- text(p,56,44,str(i+1),9,green,True);text(p,79,44,'ICHESS, LLC',12,green,True);text(p,539,44,'International Center for Health Systems Strengthening',9,ink,align='right');line(p,56,54,539,54,green)
- if i==3:text(p,56,105,'Table des matières',40,green)
+ text(p,56,44,'ICHESS, LLC',12,green,True);text(p,539,44,'International Center for Health Systems Strengthening',9,ink,align='right');line(p,56,54,539,54,green)
+ if i==3:titre_liste(p,'Table des matières',93,108)
  y=142 if i==3 else 90;line(p,99,y-12,99,y+len(group)*19,(.84,.87,.84))
  for lvl,title,num in group:
   if lvl==1:line(p,111,y-13,539,y-13,(.89,.91,.88))
   text(p,89,y,str(num),10,green,align='right');x=113 if lvl==1 else 127;f=fonts.get(choose(title,lvl==1),backup[lvl==1]);w=f.text_length(title,fontsize=10.3);text(p,x,y,title,10.3,green if lvl==1 else ink,lvl==1,width=min(w,537-x));p.insert_link(dict(kind=m.LINK_GOTO,**{"from":m.Rect(59,y-12,537,y+3)},page=num-1,to=m.Point(0,0)));y+=19
- 
+ text(p,537,24,str(i+1),9,green,align='right')
 D.set_toc(entries)
 exec((OUT/'composer_listes.py').read_text())
 composer_listes()
@@ -105,18 +105,17 @@ for i in range(1,len(D)):
  spans=[s for block in src.get_text('dict',flags=0)['blocks'] for ln in block['lines'] for s in ln['spans']];
  for x in p.get_contents():
   raw=D.xref_stream(x);raw=re.sub(rb'/Artifact\s*<<[^>]*?/Subtype/(?:Header|Footer)[^>]*?>>\s*BDC\b.*?\bEMC\b',b'',raw,flags=re.S);D.update_stream(x,re.sub(rb'\bBT\b.*?\bET\b',b'',raw,flags=re.S))
- chapter=i+1 in [2,3,9,11,14,17,26,83,89,96,100];exempts=set();before=set(p.get_contents())
  line(p,56,45,p.rect.width-56,45,(.82,.85,.83),.4)
- exempts.update(set(p.get_contents())-before)
  if i+1 in TABLEAUX:fond_tableau(p,i+1)
- if chapter:rect(p,(54,55,542,87 if i!=8 else 83),white)
  headings,skip=local_headings(spans,i+1)
  for idx,s in enumerate(spans):
   if i==12 and 60<s['origin'][1]<780:continue
   if idx in skip:continue
   if idx in headings:
-   if chapter and headings[idx][1]<95 and headings[idx][3]>=30:
-    before=set(p.get_contents());t=headings[idx][2];w=min(483,sum(extent(c,36) for c in t));text(p,56,93,t,36,green,width=w);line(p,57,108,539,108,(.86,.88,.84));line(p,57,108,102,108,ochre,2);exempts.update(set(p.get_contents())-before)
+   if i+1 in [2,3,11,14,17,26,83,89,96,100] and headings[idx][3]>=30:
+    # Do not transform the page or any existing paragraph to make room for a heading.
+    spacious=i+1 in [2,3];base=93 if spacious else 76;rule=108 if spacious else 85.5
+    rect(p,(54,50,542,rule+1.2),white);titre_liste(p,headings[idx][2],base,rule)
    else:text(p,*headings[idx])
    continue
   if i==25 and 204<s['origin'][1]<375:continue
@@ -129,22 +128,14 @@ for i in range(1,len(D)):
   elif y<60 and 'International Center' in val:oldsize=8;w=None;x=139;y=37
   elif y>src.rect.height-52 and val.strip()==str(i+1):oldsize=8;w=None;x=56;y=37;col=green
   elif s['text']!=val:w*=len(val)/len(s['text'])
-  bold='Bold' in s['font'];coords=TABLEAUX.get(i+1)
-  if coords:
-   xs,ys=coords
-   if xs[0]-1<=x<xs[-1] and ys[0]<y<=ys[-1]:
-    if y<=ys[1]:col=white;bold=True
-    elif x<xs[1]:col=green;bold=True
-    else:col=ink
-  track=chapter and y==37
-  if track:before=set(p.get_contents())
-  text(p,x,y,val,oldsize,col,bold,w)
-  if track:exempts.update(set(p.get_contents())-before)
+  if i+1 in TABLEAUX:
+   xs,ys=TABLEAUX[i+1]
+   if xs[0]-1<=x<xs[-1] and ys[0]<y<=ys[1]:col=white
+  text(p,x,y,val,oldsize,col,'Bold' in s['font'],w)
 
  if i==12:recommendations(p,src)
  if i==25:results_infographic(p,src)
  if i==26:status_band(p,src)
- if chapter:chapitre_affine(p,exempts)
 
 exec((OUT/'figures.py').read_text())
 finish_design()

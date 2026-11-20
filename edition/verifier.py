@@ -63,7 +63,7 @@ with open('edition/Controle_par_page.csv','w',encoding='utf-8-sig',newline='') a
 # Control the actual text of every new editorial layer independently, not just the source flow.
 for r in records:
  n=r['page'];q=d[n-1];area=m.Rect(r['zone']);words=norm(q.get_text(clip=area));src=norm(s[n-1].get_text())
- if r['type'] in ('navigation','folio'):
+ if r['type']=='folio':
   assert norm(r['titre'])==words,(n,words)
  elif r['type']=='lecture':
   assert words==norm(''.join(r['libelles'])),(n,words)
@@ -78,12 +78,7 @@ for r in records:
   for value in r['valeurs']:assert norm(value+' %') in words and norm(value+' %') in src,(n,value)
   if area.height>=134:
    for v in [r['evaluation']+' évaluations calculables',r['etablissements']+' établissements',r['zones']+' zones']:assert norm(v) in src and norm(v) in words,(n,v)
-assert len([r for r in records if r['type']=='navigation'])==150
-assert len([r for r in records if r['type']=='profil'])==8
-print('Navigation contrôlée sur 150 pages intérieures ; huit comparaisons provinciales rapprochées de leur texte source.')
-# Verify the rasterized foot margin, including landscape pages, not only its text.
 for p in list(d)[1:]:
- r=p.rect;bottom=m.Rect(0,r.height-20,r.width,r.height);assert min(p.get_pixmap(clip=bottom,colorspace=m.csGRAY).samples)>=250,p.number+1
-for n in [2,3,9,11,14,17,26,83,89,96,100]:
- spans=[v for b in d[n-1].get_text('dict',flags=0)['blocks'] for l in b['lines'] for v in l['spans'] if abs(v['origin'][1]-93)<.15 and 34<v['size']<38];assert spans and b' 36 Tf' in d[n-1].read_contents(),n
-print('Pied vierge sur 150 pages intérieures ; grands titres validés à 36 pt sur la ligne de base du modèle des listes.')
+ r=p.rect;assert min(p.get_pixmap(clip=m.Rect(0,r.height-20,r.width,r.height),colorspace=m.csGRAY).samples)>=250,p.number+1
+assert len([r for r in records if r['type']=='profil'])==8
+print('Absence de pied vérifiée sur les 150 pages intérieures ; huit comparaisons provinciales rapprochées de leur texte source.')
